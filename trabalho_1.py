@@ -548,10 +548,8 @@ def mostrar_controles_gamma():
 def gamma_mais():
     global imagem_carregada, gamma
 
-    gamma = gamma + 0.1
-
-    c = 255 / (255 ** gamma)
-    imagem_corrigida = c * (imagem_carregada.astype(np.float64) ** gamma)
+    c = 255 / (255 ** (gamma + 0.1))
+    imagem_corrigida = c * (imagem_carregada.astype(np.float64) ** (gamma + 0.1))
     imagem_corrigida = imagem_corrigida.astype(np.uint8)
 
     imagem_out = cv2.cvtColor(imagem_corrigida, cv2.COLOR_BGR2RGB)
@@ -570,10 +568,8 @@ def gamma_mais():
 def gamma_menos():
     global imagem_carregada, gamma
 
-    gamma = gamma - 0.1
-
-    c = 255 / (255 ** gamma)
-    imagem_corrigida = c * (imagem_carregada.astype(np.float64) ** gamma)
+    c = 255 / (255 ** (gamma - 0.1))
+    imagem_corrigida = c * (imagem_carregada.astype(np.float64) ** (gamma - 0.1))
     imagem_corrigida = imagem_corrigida.astype(np.uint8)
 
     imagem_out = cv2.cvtColor(imagem_corrigida, cv2.COLOR_BGR2RGB)
