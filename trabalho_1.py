@@ -64,12 +64,12 @@ def mostrar_controles_de_tamanho():
 
     # Adiciona um botão de zoom
     botao_zoom_mais = tk.Button(canvas, text="Aumentar", command=tamanho_mais)
-    botao_zoom_mais_tela = canvas.create_window(680, 50, anchor=tk.NW, window=botao_zoom_mais)
+    botao_zoom_mais_tela = canvas.create_window(10, 50, anchor=tk.NW, window=botao_zoom_mais)
     botoes.append(botao_zoom_mais_tela)
 
     # Adiciona um botão de zoom
     botao_zoom_menos = tk.Button(canvas, text="Diminuir", command=tamanho_menos)
-    botao_zoom_menos_tela = canvas.create_window(600, 50, anchor=tk.NE, window=botao_zoom_menos)
+    botao_zoom_menos_tela = canvas.create_window(150, 50, anchor=tk.NE, window=botao_zoom_menos)
     botoes.append(botao_zoom_menos_tela)
 
     # botao_zoom_menos = tk.Button(janela_principal, text="-", height= 2, width=5,command=zoom_menos)
@@ -82,12 +82,12 @@ def mostrar_controles_de_brilho():
     
      # Adiciona um botão de brilho
     botao_brilho_mais = tk.Button(canvas, text="Brilho +", command=brilho_mais)
-    botao_brilho_mais_tela = canvas.create_window(680, 50, anchor=tk.NW, window=botao_brilho_mais)
+    botao_brilho_mais_tela = canvas.create_window(10, 50, anchor=tk.NW, window=botao_brilho_mais)
     botoes.append(botao_brilho_mais_tela)
 
     # Adiciona um botão de zoom
     botao_brilho_menos = tk.Button(canvas, text="Brilho -", command=brilho_menos)
-    botao_brilho_menos_tela = canvas.create_window(600, 50, anchor=tk.NE, window=botao_brilho_menos)
+    botao_brilho_menos_tela = canvas.create_window(150, 50, anchor=tk.NE, window=botao_brilho_menos)
     botoes.append(botao_brilho_menos_tela)
 
 def brilho_mais():
@@ -486,7 +486,7 @@ def mostrar_botao_segunda_imagem():
     
      # Adiciona um botão de brilho
     botao_selecionar_img = tk.Button(canvas, text="Segunda imagem", command=especificacao_hist)
-    botao_selecionar_img_tela = canvas.create_window(680, 50, anchor=tk.NW, window=botao_selecionar_img)
+    botao_selecionar_img_tela = canvas.create_window(10, 50, anchor=tk.NW, window=botao_selecionar_img)
     botoes.append(botao_selecionar_img_tela)
     
 def correcao_logaritmica():
@@ -536,12 +536,12 @@ def mostrar_controles_gamma():
 
     # Adiciona um botão de gamma
     botao_gamma_mais = tk.Button(canvas, text="Gamma +", command=gamma_mais)
-    botao_gamma_mais_tela = canvas.create_window(680, 50, anchor=tk.NW, window=botao_gamma_mais)
+    botao_gamma_mais_tela = canvas.create_window(10, 50, anchor=tk.NW, window=botao_gamma_mais)
     botoes.append(botao_gamma_mais_tela)
 
    # Adiciona um botão de gamma
     botao_gamma_menos = tk.Button(canvas, text="Gamma -", command=gamma_menos)
-    botao_gamma_menos_tela = canvas.create_window(600, 50, anchor=tk.NW, window=botao_gamma_menos)
+    botao_gamma_menos_tela = canvas.create_window(150, 50, anchor=tk.NW, window=botao_gamma_menos)
     botoes.append(botao_gamma_menos_tela)
 
 
@@ -606,7 +606,7 @@ def limpar_campos_texto():
 
 # Cria uma instância da janela principal
 janela_principal = tk.Tk()
-janela_principal.title("Minha Aplicação Tkinter")
+janela_principal.title("Photoshop simplificado")
 janela_principal.geometry("1280x720")
 
 # Cria um canvas para exibir a imagem
