@@ -107,36 +107,22 @@ class ImageView:
         self.update_image()
 
     def resize_image(self):
-        def exec_button(mult):
-            self.controller.apply_resize(mult)
-            self.update_image()
-        
-
-
-        # # Cria um Frame para conter o campo de texto e o botão
-        # frame = tk.Frame(self.root)
-        # frame.pack(pady=10)
+        def exec_button():
+            mult = campo_texto.get()
+            if mult:  # Verifique se a string não está vazia
+                self.controller.apply_resize(float(mult))
+                self.update_image()
 
         # Cria uma variável StringVar
-        mult = tk.StringVar()
+        campo_texto = tk.StringVar()
 
-        # Cria um campo de texto
-        campo_texto = tk.Entry(self.canvas)
-        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto)
+        campo_texto_entry = tk.Entry(self.canvas, textvariable=campo_texto)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto_entry)
         self.textfield.append(campo_texto_tela)
 
-        value = lambda: exec_button(int(mult.get()))
-        # Cria um botão
-        botao = tk.Button(self.canvas, text="Ok", command= value)
+        value = lambda: exec_button()
+
+        botao = tk.Button(self.canvas, text="Ok", command=value)
         botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
         self.button.append(botao_tela)
-
-
-        # # Cria um botão
-        # botao = tk.Button(frame, text="Clique-me", command=exec_button(int(mult)))
-        # botao.pack(side=tk.LEFT, padx=10)
-        
-        exec_button(mult)
-        
-
 
