@@ -15,39 +15,56 @@ class ImageView:
         self.canvas.pack()
 
         # Crie um menu principal
-        self.menu_principal = tk.Menu(root)
-        root.config(menu=self.menu_principal)
+        self.main_menu = tk.Menu(root)
+        root.config(menu=self.main_menu)
 
         # Crie um menu "Arquivo" com as opções "Carregar imagem" e "Salvar imagem"
-        self.menu_arquivo = tk.Menu(self.menu_principal, tearoff=0)
-        self.menu_principal.add_cascade(label="Arquivo", menu=self.menu_arquivo)
-        self.menu_arquivo.add_command(label="Carregar imagem", command=self.load_image)
-        self.menu_arquivo.add_command(label="Salvar imagem", command=self.save_image)
+        self.file_menu = tk.Menu(self.main_menu, tearoff=0)
+        self.main_menu.add_cascade(label="Arquivo", menu=self.file_menu)
+        self.file_menu.add_command(label="Carregar imagem", command=self.load_image)
+        self.file_menu.add_command(label="Salvar imagem", command=self.save_image)
 
-        # # Cria um menu "Editar" com a opção "Recursos de edição"
-        # self.menu_editar = tk.Menu(self.menu_principal, tearoff=0)
-        # self.menu_principal.add_cascade(label="Editar", menu=self.menu_editar)
+        # Cria um menu "Editar" com a opção "Recursos de edição"
+        self.menu_edit = tk.Menu(self.main_menu, tearoff=0)
+        self.main_menu.add_cascade(label="Editar", menu=self.menu_edit)
 
-        # # Adiciona submenus de "Recursos de edição"
-        # self.submenu_recursos = tk.Menu(self.menu_editar, tearoff=0)
-        # self.menu_editar.add_cascade(label="Recursos de edição", menu=self.submenu_recursos)
+        # Adiciona submenus de "Recursos de edição"
+        submenu_resources = tk.Menu(self.menu_edit, tearoff=0)
+        self.menu_edit.add_cascade(label="Recursos de edição", menu=submenu_resources)
 
-        # self.submenu_recursos.add_command(label="Redimensionamento", command=self.resize_image)
-        # self.submenu_recursos.add_command(label="Brilho", command=self.adjust_brightness)
+        submenu_resources.add_command(label="Redimensionamento", command=self.resize_image)
 
-        # Crie botões e ligue-os aos métodos do Controller
-        self.button_brightness = tk.Button(root, text="Ajustar Brilho", command=self.adjust_brightness)
-        self.button_brightness.pack()
-        self.button_negative = tk.Button(root, text="Efeito Negativo", command=self.apply_negative)
-        self.button_negative.pack()
-        self.button_box_filter = tk.Button(root, text="Filtro de Caixa", command=self.apply_box_filter)
-        self.button_box_filter.pack()
-        self.button_gaussian_filter = tk.Button(root, text="Filtro Gaussiano", command=self.apply_gaussian_filter)
-        self.button_gaussian_filter.pack()
-        self.button_gamma_correction = tk.Button(root, text="Correção Gamma", command=self.gamma_correction)
-        self.button_gamma_correction.pack()
-        self.button_resize = tk.Button(root, text="Redimensionar", command=self.resize_image)
-        self.button_resize.pack()
+        submenu_resources.add_command(label="Brilho", command=None)
+
+        # Adiciona submenus de "Filtros"
+        submenu_filters = tk.Menu(submenu_resources, tearoff=0)
+        submenu_resources.add_cascade(label="Filtros", menu=submenu_filters)
+        submenu_filters.add_command(label="Gaussiano", command=None)
+        submenu_filters.add_command(label="Filtro Box", command=None)
+        submenu_filters.add_command(label="Mediana", command=None)
+        submenu_filters.add_command(label="Laplaciano", command=None)
+        submenu_filters.add_command(label="Sobel", command=None)
+        submenu_filters.add_command(label="Aguçamento via Gradiente", command=None)
+        submenu_filters.add_command(label="Canny", command=None)
+        submenu_filters.add_command(label="Hough", command=None)
+
+        # Adiciona submenus de "Efeitos"
+        submenu_effects = tk.Menu(submenu_resources, tearoff=0)
+        submenu_resources.add_cascade(label="Efeitos", menu=submenu_effects)
+        submenu_effects.add_command(label="Negativo", command=None)
+
+        # Adiciona submenus de "Histograma"
+        submenu_histogram = tk.Menu(submenu_resources, tearoff=0)
+        submenu_resources.add_cascade(label="Histograma", menu=submenu_histogram)
+        submenu_histogram.add_command(label="Especificação", command=None)
+        submenu_histogram.add_command(label="Equalização", command=None)
+
+        # Correções de contraste
+        submenu_contrast = tk.Menu(submenu_resources, tearoff=0)
+        submenu_resources.add_cascade(label="Correções de contraste", menu=submenu_contrast)
+        submenu_contrast.add_command(label="Logaritmica", command=None)
+        submenu_contrast.add_command(label="Exponencial", command=None)
+        submenu_contrast.add_command(label="Gamma", command=None)
 
     def load_image(self):
         filepath = filedialog.askopenfilename(filetypes=[("Imagens", "*.jpg *.png")])
@@ -63,7 +80,7 @@ class ImageView:
     def update_image(self):
         image_pil = self.controller.get_image_pil()
         self.photo = ImageTk.PhotoImage(image=image_pil)
-        self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo)
+        self.canvas.create_image(320, 0, anchor=tk.NW, image=self.photo)
 
     def adjust_brightness(self):
         constant = 50  # Valor de exemplo, você pode permitir que o usuário defina isso
@@ -88,7 +105,14 @@ class ImageView:
         self.update_image()
 
     def resize_image(self):
+        def exec_button(self, width, height):
+            self.controller.apply_resize(self,width, height)
+            self.update_image(self)
+        
         width = 640  # Valor de exemplo, você pode permitir que o usuário defina isso
         height = 480  # Valor de exemplo, você pode permitir que o usuário defina isso
-        self.controller.apply_resize(width, height)
-        self.update_image()
+        
+        exec_button(self, width=width, height=height)
+        
+
+
