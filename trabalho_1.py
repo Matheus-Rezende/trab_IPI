@@ -616,6 +616,16 @@ def gamma_menos():
     # Salvando a alteração na imagem global
     imagem_carregada = imagem_corrigida
 
+
+    """
+    camadas = []
+    camadas.append(imagem_corrigida)
+    imagF = camadas[0]
+    for camada in camadas[1:]:
+        imagF = imagF + camada
+    imagf = imagf / len(camadas)
+    """
+
 # Função para limpar os botões de zoom
 def limpar_botoes():
     global botoes

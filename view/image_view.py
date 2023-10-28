@@ -50,13 +50,13 @@ class ImageView:
         self.button_resize.pack()
 
     def load_image(self):
-        filepath = filedialog.askopenfilename(filetypes=[("Imagens", "*.jpg *.jpeg *.png *.bmp *.gif")])
+        filepath = filedialog.askopenfilename(filetypes=[("Imagens", "*.jpg *.png")])
         if filepath:
             self.controller.load_image(filepath)
             self.update_image()
 
     def save_image(self):
-        filepath = filedialog.asksaveasfilename(defaultextension=".jpg", filetypes=[("Imagens", "*.jpg *.jpeg *.png *.bmp *.gif")])
+        filepath = filedialog.asksaveasfilename(defaultextension=".jpg", filetypes=[("Imagens", "*.jpg *.png")])
         if filepath:
             self.controller.save_image(filepath)
 
