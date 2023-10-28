@@ -43,12 +43,12 @@ class ImageView:
         submenu_resources.add_cascade(label="Filtros", menu=submenu_filters)
         submenu_filters.add_command(label="Gaussiano", command=self.apply_gaussian_filter)
         submenu_filters.add_command(label="Filtro Box", command=self.apply_box_filter)
-        submenu_filters.add_command(label="Mediana", command=None)
-        submenu_filters.add_command(label="Laplaciano", command=None)
-        submenu_filters.add_command(label="Sobel", command=None)
-        submenu_filters.add_command(label="Aguçamento via Gradiente", command=None)
-        submenu_filters.add_command(label="Canny", command=None)
-        submenu_filters.add_command(label="Hough", command=None)
+        submenu_filters.add_command(label="Mediana", command=self.median)
+        submenu_filters.add_command(label="Laplaciano", command=self.laplacian)
+        submenu_filters.add_command(label="Sobel", command=self.sobel)
+        submenu_filters.add_command(label="Aguçamento via Gradiente", command=self.gradient_sharpening)
+        submenu_filters.add_command(label="Canny", command=self.canny)
+        submenu_filters.add_command(label="Hough", command=self.hough_transform)
 
         # Adiciona submenus de "Efeitos"
         submenu_effects = tk.Menu(submenu_resources, tearoff=0)
@@ -58,15 +58,15 @@ class ImageView:
         # Adiciona submenus de "Histograma"
         submenu_histogram = tk.Menu(submenu_resources, tearoff=0)
         submenu_resources.add_cascade(label="Histograma", menu=submenu_histogram)
-        submenu_histogram.add_command(label="Especificação", command=None)
-        submenu_histogram.add_command(label="Equalização", command=None)
+        submenu_histogram.add_command(label="Especificação", command=self.specification_hist)
+        submenu_histogram.add_command(label="Equalização", command=self.equalization_hist)
 
         # Correções de contraste
         submenu_contrast = tk.Menu(submenu_resources, tearoff=0)
         submenu_resources.add_cascade(label="Correções de contraste", menu=submenu_contrast)
-        submenu_contrast.add_command(label="Logaritmica", command=None)
-        submenu_contrast.add_command(label="Exponencial", command=None)
-        submenu_contrast.add_command(label="Gamma", command=None)
+        submenu_contrast.add_command(label="Logaritmica", command=self.logarithmic_correction)
+        submenu_contrast.add_command(label="Exponencial", command=self.exponential_correction)
+        submenu_contrast.add_command(label="Gamma", command=self.gamma_correction)
 
     def update_image(self):
         image_pil = self.controller.get_image_pil()
@@ -130,6 +130,7 @@ class ImageView:
         self.controller.apply_negative()
         self.update_image()
 
+
     def apply_box_filter(self):
         def exec_button():
             kernel_size = campo_texto.get()
@@ -149,6 +150,7 @@ class ImageView:
         botao = tk.Button(self.canvas, text="Ok", command=value)
         botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
         self.button.append(botao_tela)
+
 
     def apply_gaussian_filter(self):
         def exec_button():
@@ -170,13 +172,16 @@ class ImageView:
         botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
         self.button.append(botao_tela)
 
+
     def laplacian(self):
         self.controller.laplacian()
         self.update_image()
 
+
     def gradient_sharpening(self):
         self.controller.gradient_sharpening()
         self.update_image()
+
 
     def sobel(self):
         def exec_button():
@@ -198,6 +203,7 @@ class ImageView:
         botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
         self.button.append(botao_tela)
 
+
     def canny(self):
         def exec_button():
             gaussian_blur = campo_texto.get()
@@ -217,6 +223,7 @@ class ImageView:
         botao = tk.Button(self.canvas, text="Ok", command=value)
         botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
         self.button.append(botao_tela)
+
 
     def median(self):
         def exec_button():
@@ -243,17 +250,21 @@ class ImageView:
         self.controller.specification_hist()
         self.update_image()
 
+
     def equalization_hist(self):
         self.controller.equalization_hist()
         self.update_image()
+
 
     def logarithmic_correction(self):
         self.controller.logarithmic_correction()
         self.update_image()
 
+
     def exponential_correction(self):
         self.controller.exponential_correction()
         self.update_image()
+
 
     def gamma_correction(self):
         def exec_button():
@@ -276,4 +287,6 @@ class ImageView:
         self.button.append(botao_tela)
 
 
-    
+    def hough_transform(self):
+        self.controller.hough_transform()
+        self.update_image()

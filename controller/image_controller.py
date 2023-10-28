@@ -53,8 +53,8 @@ class ImageController:
     def exponential_correction(self):
         self.model.exponential_correction()
 
-    def apply_gamma_correction(self):
-        self.model.apply_gamma_correction()
+    def apply_gamma_correction(self, fator):
+        self.model.apply_gamma_correction(fator)
 
     def hough_transform(self):
         self.model.hough_transform()
