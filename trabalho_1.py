@@ -359,6 +359,37 @@ def sobel():
     # Salvando a alteração na imagem global
     imagem_carregada = imagem_sobel
 
+def canny():
+    global imagem_carregada
+
+    # Limpa os botões anteriores, se houver
+    limpar_botoes()
+
+    img_gray = cv2.cvtColor(imagem_carregada, cv2.COLOR_BGR2GRAY)
+
+    # Extrai contorno
+    img_gray = cv2.GaussianBlur(img_gray, (5,5), 0)
+    canny_img = cv2.Canny(img_gray, 30, 150)
+    # (contorno, _) = cv2.findContours(canny_img.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # cv2.drawContours(img_carregada_gray, contorno, -1, (0, 255, 0))
+    
+    # Converta a imagem OpenCV em um objeto PIL Image
+    imagem_canny_pil = Image.fromarray(canny_img)
+    # imagem_carregada_pil = Image.fromarray(img_carregada_gray)
+
+    # Exibe a imagem com o brilho ajustado no canvas
+    imagem_canny_tk = ImageTk.PhotoImage(imagem_canny_pil)
+    # imagem_carregada_tk = ImageTk.PhotoImage(imagem_carregada_pil)
+
+    canvas.create_image(320, 0, anchor=tk.NW, image=imagem_canny_tk)
+    # canvas.create_image(280, 700, anchor=tk.NW, image=imagem_carregada_tk)
+
+    canvas.imagem_canny_tk = imagem_canny_tk  # Salva uma referência para evitar que a imagem seja destruída pela coleta de lixo
+    # canvas.imagem_carregada_tk = imagem_carregada_tk 
+
+    # Salvando a alteração na imagem global
+    imagem_carregada = canny_img 
+
 def mediana():
     global imagem_carregada
 
@@ -604,6 +635,10 @@ def limpar_campos_texto():
         canvas.delete(campo_window)
     campos = []
 
+# Função para fechar a aplicação
+def fechar_aplicacao():
+    janela_principal.destroy()
+
 # Cria uma instância da janela principal
 janela_principal = tk.Tk()
 janela_principal.title("Photoshop simplificado")
@@ -620,6 +655,9 @@ janela_principal.config(menu=menu_principal)
 # Cria um rótulo para exibir a imagem
 label_imagem = tk.Label(janela_principal)
 label_imagem.pack()
+
+# Inicializa a janela em modo fullScreen
+janela_principal.attributes('-fullscreen', True)
 
 # Cria um menu "Arquivo" com as opções "Carregar imagem" e "Salvar imagem"
 menu_arquivo = tk.Menu(menu_principal, tearoff=0)
@@ -649,6 +687,8 @@ submenu_filtros.add_command(label="Mediana", command=mediana)
 submenu_filtros.add_command(label="Laplaciano", command=laplaciano)
 submenu_filtros.add_command(label="Sobel", command=sobel)
 submenu_filtros.add_command(label="Aguçamento via Gradiente", command=agucamento_gradiente)
+submenu_filtros.add_command(label="Canny", command=canny)
+
 
 # Adiciona submenus de "Efeitos"
 submenu_efeitos = tk.Menu(submenu_recursos, tearoff=0)
@@ -667,6 +707,11 @@ submenu_recursos.add_cascade(label="Correções de contraste", menu=submenu_cont
 submenu_contraste.add_command(label="Logaritmica", command=correcao_logaritmica)
 submenu_contraste.add_command(label="Exponencial", command=correcao_exponencial)
 submenu_contraste.add_command(label="Gamma", command=mostrar_controles_gamma)
+
+# Cria um menu "Arquivo" com as opções "Carregar imagem" e "Salvar imagem"
+menu_sair = tk.Menu(menu_principal, tearoff=0)
+menu_principal.add_cascade(label="Ações", menu=menu_sair)
+menu_sair.add_command(label="Sair", command=fechar_aplicacao)
 
 # Inicia o loop principal da aplicação
 janela_principal.mainloop()
