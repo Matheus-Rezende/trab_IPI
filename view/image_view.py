@@ -6,6 +6,8 @@ class ImageView:
     def __init__(self, root, controller):
         self.root = root
         self.controller = controller
+        self.textfield = []
+        self.button = []
 
         self.root.title("Photoshop simplificado")
         self.root.geometry("1280x720")
@@ -109,7 +111,30 @@ class ImageView:
             self.controller.apply_resize(mult)
             self.update_image()
         
-        mult = 0.5
+
+
+        # # Cria um Frame para conter o campo de texto e o botão
+        # frame = tk.Frame(self.root)
+        # frame.pack(pady=10)
+
+        # Cria uma variável StringVar
+        mult = tk.StringVar()
+
+        # Cria um campo de texto
+        campo_texto = tk.Entry(self.canvas)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto)
+        self.textfield.append(campo_texto_tela)
+
+        value = lambda: exec_button(int(mult.get()))
+        # Cria um botão
+        botao = tk.Button(self.canvas, text="Ok", command= value)
+        botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
+        self.button.append(botao_tela)
+
+
+        # # Cria um botão
+        # botao = tk.Button(frame, text="Clique-me", command=exec_button(int(mult)))
+        # botao.pack(side=tk.LEFT, padx=10)
         
         exec_button(mult)
         
