@@ -105,14 +105,13 @@ class ImageView:
         self.update_image()
 
     def resize_image(self):
-        def exec_button(self, width, height):
-            self.controller.apply_resize(self,width, height)
-            self.update_image(self)
+        def exec_button(mult):
+            self.controller.apply_resize(mult)
+            self.update_image()
         
-        width = 640  # Valor de exemplo, você pode permitir que o usuário defina isso
-        height = 480  # Valor de exemplo, você pode permitir que o usuário defina isso
+        mult = 0.5
         
-        exec_button(self, width=width, height=height)
+        exec_button(mult)
         
 
 

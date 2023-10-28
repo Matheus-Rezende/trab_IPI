@@ -44,9 +44,14 @@ class ImageModel:
     def apply_resize(self, mult): 
         # Calcula a nova largura e altura
         # se mult > 0 aumenta e se < 0 diminui
-        if mult != 0:
-            width = int(self.image.shape[1] + self.fator * mult)
-            height = int(self.image.shape[0] + self.fator * mult)
+        if mult > 0:
+            print(mult)
+            print(self.image.shape[1])
+            print(self.image.shape[0])
+            width = int(self.image.shape[1] * self.fator * mult)
+            height = int(self.image.shape[0] * self.fator * mult)
+            print(width)
+            print(height)
 
             # Redimensiona a imagem
             image_resize = cv2.resize(self.image, (width, height),interpolation=cv2.INTER_LINEAR_EXACT)  
