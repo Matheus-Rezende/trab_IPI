@@ -36,13 +36,13 @@ class ImageView:
 
         submenu_resources.add_command(label="Redimensionamento", command=self.resize_image)
 
-        submenu_resources.add_command(label="Brilho", command=None)
+        submenu_resources.add_command(label="Brilho", command=self.adjust_brightness)
 
         # Adiciona submenus de "Filtros"
         submenu_filters = tk.Menu(submenu_resources, tearoff=0)
         submenu_resources.add_cascade(label="Filtros", menu=submenu_filters)
-        submenu_filters.add_command(label="Gaussiano", command=None)
-        submenu_filters.add_command(label="Filtro Box", command=None)
+        submenu_filters.add_command(label="Gaussiano", command=self.apply_gaussian_filter)
+        submenu_filters.add_command(label="Filtro Box", command=self.apply_box_filter)
         submenu_filters.add_command(label="Mediana", command=None)
         submenu_filters.add_command(label="Laplaciano", command=None)
         submenu_filters.add_command(label="Sobel", command=None)
@@ -53,7 +53,7 @@ class ImageView:
         # Adiciona submenus de "Efeitos"
         submenu_effects = tk.Menu(submenu_resources, tearoff=0)
         submenu_resources.add_cascade(label="Efeitos", menu=submenu_effects)
-        submenu_effects.add_command(label="Negativo", command=None)
+        submenu_effects.add_command(label="Negativo", command=self.apply_negative)
 
         # Adiciona submenus de "Histograma"
         submenu_histogram = tk.Menu(submenu_resources, tearoff=0)
@@ -68,6 +68,11 @@ class ImageView:
         submenu_contrast.add_command(label="Exponencial", command=None)
         submenu_contrast.add_command(label="Gamma", command=None)
 
+    def update_image(self):
+        image_pil = self.controller.get_image_pil()
+        self.photo = ImageTk.PhotoImage(image=image_pil)
+        self.canvas.create_image(320, 0, anchor=tk.NW, image=self.photo)
+
     def load_image(self):
         filepath = filedialog.askopenfilename(filetypes=[("Imagens", "*.jpg *.png")])
         if filepath:
@@ -79,32 +84,26 @@ class ImageView:
         if filepath:
             self.controller.save_image(filepath)
 
-    def update_image(self):
-        image_pil = self.controller.get_image_pil()
-        self.photo = ImageTk.PhotoImage(image=image_pil)
-        self.canvas.create_image(320, 0, anchor=tk.NW, image=self.photo)
-
     def adjust_brightness(self):
-        constant = 50  # Valor de exemplo, você pode permitir que o usuário defina isso
-        self.controller.apply_brightness(constant)
-        self.update_image()
+        def exec_button():
+            constant = campo_texto.get()
+            if constant:  # Verifique se a string não está vazia
+                self.controller.apply_brightness(int(constant))
+                self.update_image()
 
-    def apply_negative(self):
-        self.controller.apply_negative()
-        self.update_image()
+        # Cria uma variável StringVar
+        campo_texto = tk.StringVar()
 
-    def apply_box_filter(self):
-        self.controller.apply_filter_box()
-        self.update_image()
+        campo_texto_entry = tk.Entry(self.canvas, textvariable=campo_texto)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto_entry)
+        self.textfield.append(campo_texto_tela)
 
-    def apply_gaussian_filter(self):
-        self.controller.apply_gaussian()
-        self.update_image()
+        value = lambda: exec_button()
 
-    def gamma_correction(self):
-        gamma = 1.5  # Valor de exemplo, você pode permitir que o usuário defina isso
-        self.controller.apply_gamma_correction(gamma)
-        self.update_image()
+        botao = tk.Button(self.canvas, text="Ok", command=value)
+        botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
+        self.button.append(botao_tela)
+
 
     def resize_image(self):
         def exec_button():
@@ -126,3 +125,155 @@ class ImageView:
         botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
         self.button.append(botao_tela)
 
+
+    def apply_negative(self):
+        self.controller.apply_negative()
+        self.update_image()
+
+    def apply_box_filter(self):
+        def exec_button():
+            kernel_size = campo_texto.get()
+            if kernel_size:  # Verifique se a string não está vazia
+                self.controller.apply_filter_box(int(kernel_size))
+                self.update_image()
+
+        # Cria uma variável StringVar
+        campo_texto = tk.StringVar()
+
+        campo_texto_entry = tk.Entry(self.canvas, textvariable=campo_texto)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto_entry)
+        self.textfield.append(campo_texto_tela)
+
+        value = lambda: exec_button()
+
+        botao = tk.Button(self.canvas, text="Ok", command=value)
+        botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
+        self.button.append(botao_tela)
+
+    def apply_gaussian_filter(self):
+        def exec_button():
+            kernel_size = campo_texto.get()
+            if kernel_size:  # Verifique se a string não está vazia
+                self.controller.apply_gaussian(int(kernel_size))
+                self.update_image()
+
+        # Cria uma variável StringVar
+        campo_texto = tk.StringVar()
+
+        campo_texto_entry = tk.Entry(self.canvas, textvariable=campo_texto)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto_entry)
+        self.textfield.append(campo_texto_tela)
+
+        value = lambda: exec_button()
+
+        botao = tk.Button(self.canvas, text="Ok", command=value)
+        botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
+        self.button.append(botao_tela)
+
+    def laplacian(self):
+        self.controller.laplacian()
+        self.update_image()
+
+    def gradient_sharpening(self):
+        self.controller.gradient_sharpening()
+        self.update_image()
+
+    def sobel(self):
+        def exec_button():
+            k_size = campo_texto.get()
+            if k_size:  # Verifique se a string não está vazia
+                self.controller.sobel(int(k_size))
+                self.update_image()
+
+        # Cria uma variável StringVar
+        campo_texto = tk.StringVar()
+
+        campo_texto_entry = tk.Entry(self.canvas, textvariable=campo_texto)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto_entry)
+        self.textfield.append(campo_texto_tela)
+
+        value = lambda: exec_button()
+
+        botao = tk.Button(self.canvas, text="Ok", command=value)
+        botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
+        self.button.append(botao_tela)
+
+    def canny(self):
+        def exec_button():
+            gaussian_blur = campo_texto.get()
+            if gaussian_blur:  # Verifique se a string não está vazia
+                self.controller.canny(int(gaussian_blur))
+                self.update_image()
+
+        # Cria uma variável StringVar
+        campo_texto = tk.StringVar()
+
+        campo_texto_entry = tk.Entry(self.canvas, textvariable=campo_texto)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto_entry)
+        self.textfield.append(campo_texto_tela)
+
+        value = lambda: exec_button()
+
+        botao = tk.Button(self.canvas, text="Ok", command=value)
+        botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
+        self.button.append(botao_tela)
+
+    def median(self):
+        def exec_button():
+            ksize = campo_texto.get()
+            if ksize:  # Verifique se a string não está vazia
+                self.controller.median(int(ksize))
+                self.update_image()
+
+        # Cria uma variável StringVar
+        campo_texto = tk.StringVar()
+
+        campo_texto_entry = tk.Entry(self.canvas, textvariable=campo_texto)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto_entry)
+        self.textfield.append(campo_texto_tela)
+
+        value = lambda: exec_button()
+
+        botao = tk.Button(self.canvas, text="Ok", command=value)
+        botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
+        self.button.append(botao_tela)
+
+
+    def specification_hist(self):
+        self.controller.specification_hist()
+        self.update_image()
+
+    def equalization_hist(self):
+        self.controller.equalization_hist()
+        self.update_image()
+
+    def logarithmic_correction(self):
+        self.controller.logarithmic_correction()
+        self.update_image()
+
+    def exponential_correction(self):
+        self.controller.exponential_correction()
+        self.update_image()
+
+    def gamma_correction(self):
+        def exec_button():
+            gamma = campo_texto.get()
+            if gamma:  # Verifique se a string não está vazia
+                self.controller.apply_gamma_correction(float(gamma))
+                self.update_image()
+
+        # Cria uma variável StringVar
+        campo_texto = tk.StringVar()
+
+        campo_texto_entry = tk.Entry(self.canvas, textvariable=campo_texto)
+        campo_texto_tela = self.canvas.create_window(10, 50, anchor=tk.NW, window=campo_texto_entry)
+        self.textfield.append(campo_texto_tela)
+
+        value = lambda: exec_button()
+
+        botao = tk.Button(self.canvas, text="Ok", command=value)
+        botao_tela = self.canvas.create_window(30, 50, anchor=tk.NW, window=botao)
+        self.button.append(botao_tela)
+
+
+    

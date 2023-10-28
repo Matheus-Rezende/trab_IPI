@@ -38,7 +38,7 @@ class ImageModel:
         if constant > 0:
             self.image = cv2.add(self.image, np.ones(self.image.shape, dtype=np.uint8) * constant)
         elif constant < 0:
-            self.image = cv2.subtract(self.image, np.ones(self.image.shape, dtype=np.uint8) * constant)
+            self.image = cv2.subtract(self.image, np.ones(self.image.shape, dtype=np.uint8) * (constant * (-1)))
 
 
     def apply_resize(self, mult): 
