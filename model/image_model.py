@@ -268,24 +268,16 @@ class ImageModel:
         edges = cv2.Canny(gray, 50, 150, apertureSize=3)
         
         # Aplica a transformada de Hough para detectar linhas
-        lines = cv2.HoughLines(edges, 1, np.pi / 180, threshold=100)
+        lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength=100, maxLineGap=10)
         
         # Desenha as linhas detectadas na imagem original
-        result = self.image.copy()
+        image_ = self.image
         if lines is not None:
             for line in lines:
-                rho, theta = line[0]
-                a = np.cos(theta)
-                b = np.sin(theta)
-                x0 = a * rho
-                y0 = b * rho
-                x1 = int(x0 + 1000 * (-b))
-                y1 = int(y0 + 1000 * (a))
-                x2 = int(x0 - 1000 * (-b))
-                y2 = int(y0 - 1000 * (a))
-                cv2.line(result, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                x1, y1, x2, y2 = line[0]
+                cv2.line(image_, (x1, y1), (x2, y2), (0, 0, 255), 2)
         
-        self.image = result
+        self.image = image_
 
 
     def get_image_pil(self):
